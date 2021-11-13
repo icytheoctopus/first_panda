@@ -9,7 +9,7 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        $usersData = [
+        $usersRows = [
             [
                 'id' => 1,
                 'email' => 'alex@tempmail.com',
@@ -61,8 +61,8 @@ class UserSeeder extends Seeder
             ]
         ];
 
-        foreach ($usersData as $userData){
-            User::factory()->create($userData);
+        foreach ($usersRows as $userRow){
+            User::factory()->create($userRow);
         }
     }
 }

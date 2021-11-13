@@ -9,7 +9,7 @@ class CountrySeeder extends Seeder
 {
     public function run()
     {
-        $countriesData = [
+        $countriesRows = [
             ['id' => 1, 'iso2' => 'AT', 'iso3' => 'AUT', 'name' => 'Austria'],
             ['id' => 2, 'iso2' => 'FR', 'iso3' => 'FRA', 'name' => 'France'],
             ['id' => 3, 'iso2' => 'DE', 'iso3' => 'DEU', 'name' => 'Germany'],
@@ -18,8 +18,8 @@ class CountrySeeder extends Seeder
             ['id' => 6, 'iso2' => 'CN', 'iso3' => 'CHN', 'name' => 'China'],
         ];
 
-        foreach ($countriesData as $countryData){
-            Country::factory()->create($countryData);
+        foreach ($countriesRows as $countryRow){
+            Country::factory()->create($countryRow);
         }
     }
 }
