@@ -15,6 +15,7 @@ class CreateCountriesTable extends Migration
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->charset = 'utf8';
+            $table->collation = 'utf8_general_ci';
 
             $table->id();
             $table
