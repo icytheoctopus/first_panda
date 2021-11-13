@@ -10,12 +10,9 @@ class UserDetailsFactory extends Factory
 {
     public function definition()
     {
-        $user = User::all()->random() ?? User::factory()->create();
-        $country = Country::all()->random() ?? Country::factory()->create();
-
         return [
-            'user_id' => $user->id,
-            'citizenship_country_id' => $country->id,
+            'user_id' => User::factory()->create()->id,
+            'citizenship_country_id' => Country::factory()->create()->id,
 
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
