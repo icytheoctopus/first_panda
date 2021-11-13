@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserDetailsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/austrians', [UserController::class, 'getActiveAustrians']);
+Route::get('/active-austrians', [UserController::class, 'getActiveAustrians']);
+Route::get('/user/{user}/delete', [UserController::class, 'delete']);

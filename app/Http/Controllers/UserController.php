@@ -27,6 +27,15 @@ class UserController extends Controller
         })->get();
     }
 
+    public function delete(User $user){
+        if ($user->user_details()->exists()){
+            return response("Can't delete User that has UserDetails");
+        }
+
+        $user->deleteOrFail();
+        return response("User deleted");
+    }
+
     /**
      * Display a listing of the resource.
      *
