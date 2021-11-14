@@ -10,6 +10,13 @@ class UserDetails extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'phone_number',
+        'citizenship_country_id'
+    ];
+
     public function getCountry(): ?Country
     {
         return $this->country()->first();
