@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
 class UserController extends Controller
 {
-    public function getUsersByCountryCode($countryCode)
+    public function getUsersByCountryCode($countryCode): JsonResponse | AnonymousResourceCollection
     {
         $countryCode = strtoupper($countryCode);
-        if ($codeIsoStandard = $this->determineISOStandard($countryCode)){
-            return $this->getActiveUsersByCountryCode($countryCode, $codeIsoStandard);
+        $codeIsoStandard = $this->determineISOStandard($countryCode);
+
+        if (!$codeIsoStandard){
+            return response()->json([
+                'message' => 'Invalid code, please use ISO Alpha-2 or ISO Alpha-3 country code'
+            ], 400);
         }
 
-        return response()->json([
-            'message' => 'Invalid code, please use ISO Alpha-2 or ISO Alpha-3 country code'
-        ], 400);
+        return UserResource::collection($this->getActiveUsersByCountryCode($countryCode, $codeIsoStandard));
     }
 
     private function determineISOStandard($countryCode): ?string
@@ -36,7 +40,7 @@ class UserController extends Controller
         return null;
     }
 
-    private function getActiveUsersByCountryCode($countryCode = 'AT', $codeIsoStandard = 'iso2') : Collection
+    private function getActiveUsersByCountryCode($countryCode = 'AT', $codeIsoStandard = 'iso2'): Collection
     {
         return $this->activeUsers()->whereHas('user_details', function (Builder $userDetailsQuery) use ($countryCode, $codeIsoStandard) {
             $userDetailsQuery->whereHas('country', function (Builder $countryQuery) use ($countryCode, $codeIsoStandard) {
