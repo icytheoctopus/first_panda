@@ -28,11 +28,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function isActive(): bool
-    {
-        return $this->active === 1;
-    }
-
     public function getCountry(): ?Country
     {
         if ($userDetails = $this->getUserDetails()){

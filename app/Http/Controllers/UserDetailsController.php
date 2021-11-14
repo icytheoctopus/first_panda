@@ -56,6 +56,6 @@ class UserDetailsController extends Controller
             'citizenship_country_id'
         ]);
 
-        return Validator::make($userDetailsData, UserDetails::$validationRules);
+        return Validator::make($userDetailsData, UserDetails::$updateValidationRules);
     }
 }

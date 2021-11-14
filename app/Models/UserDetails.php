@@ -10,7 +10,7 @@ class UserDetails extends Model
 {
     use HasFactory;
 
-    public static array $validationRules = [
+    public static array $updateValidationRules = [
         'first_name' => ['sometimes', 'required', 'min:2', 'max:50'],
         'last_name' => ['sometimes', 'required', 'string', 'min:2', 'max:50'],
         'phone_number' => ['sometimes','required','string'],
