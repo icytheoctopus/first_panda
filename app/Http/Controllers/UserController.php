@@ -4,111 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
+use Throwable;
 
 class UserController extends Controller
 {
-    public function activeUsers()
+    public function getUsersByCountryCode($countryCode)
     {
-        return User::where('active', 1);
+        $countryCode = strtoupper($countryCode);
+        if ($codeIsoStandard = $this->determineISOStandard($countryCode)){
+            return $this->getActiveUsersByCountryCode($countryCode, $codeIsoStandard);
+        }
+        return response("Invalid code, please use ISO Alpha-2 or ISO Alpha-3 country code", 400);
     }
 
-    public function getActiveAustrians()
+    private function determineISOStandard($countryCode): ?string
     {
-        return $this->getActiveUsersByCountryName('Austria');
+        $codeLength = strlen($countryCode);
+        if ($codeLength === 2){
+            return 'iso2';
+        }
+
+        if ($codeLength === 3){
+            return 'iso3';
+        }
+
+        return null;
     }
 
-    private function getActiveUsersByCountryName($countryName = 'Austria')
+    private function getActiveUsersByCountryCode($countryCode = 'AT', $codeIsoStandard = 'iso2') : Collection
     {
-        return $this->activeUsers()->whereHas('user_details', function(Builder $query) use ($countryName) {
-            $query->whereHas('country', function (Builder $subQuery) use ($countryName) {
-                $subQuery->where('name',$countryName);
+        return $this->activeUsers()->whereHas('user_details', function (Builder $userDetailsQuery) use ($countryCode, $codeIsoStandard) {
+            $userDetailsQuery->whereHas('country', function (Builder $countryQuery) use ($countryCode, $codeIsoStandard) {
+                $countryQuery->where($codeIsoStandard, $countryCode);
             });
         })->get();
     }
 
-    public function delete(User $user){
+    private function activeUsers()
+    {
+        return User::where('active', 1);
+    }
+
+    public function destroy(User $user)
+    {
         if ($user->user_details()->exists()){
-            return response("Can't delete User that has UserDetails");
+            return response("Unable to delete user with details.", 403);
         }
 
-        $user->deleteOrFail();
-        return response("User deleted");
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        try {
+            $user->deleteOrFail();
+            return response("User deleted", 200);
+        }
+        catch (Throwable $e) {
+            return response("Failed to delete", 500);
+        }
     }
 }
