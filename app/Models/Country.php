@@ -10,6 +10,8 @@ class Country extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     public function user_details(): HasMany
     {
         return $this->hasMany(UserDetails::class, 'citizenship_country_id');

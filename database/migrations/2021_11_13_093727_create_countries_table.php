@@ -30,7 +30,6 @@ class CreateCountriesTable extends Migration
                 ->char('iso3', 3)
                 ->collation('ascii_bin')
                 ->comment('ISO 3166-3 three letter upper case country code.');
-            $table->timestamps();
         });
     }
 
