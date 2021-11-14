@@ -28,15 +28,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getCountry(): ?Country
-    {
-        if ($userDetails = $this->getUserDetails()){
-            return $userDetails->getCountry();
-        }
-
-        return null;
-    }
-
     public function getUserDetails(): ?UserDetails
     {
         return $this->details()->first();

@@ -45,11 +45,12 @@ class UserController extends Controller
 
     private function getActiveUsersByCountryCode($countryCode = 'AT', $codeIsoStandard = 'iso2'): Collection
     {
-        return $this->activeUsers()->whereHas('details', function (Builder $userDetailsQuery) use ($countryCode, $codeIsoStandard) {
-            $userDetailsQuery->whereHas('country', function (Builder $countryQuery) use ($countryCode, $codeIsoStandard) {
-                $countryQuery->where($codeIsoStandard, $countryCode);
-            });
-        })->get();
+        return $this
+            ->activeUsers()
+            ->whereHas('details.country', function (Builder $query) use ($countryCode, $codeIsoStandard) {
+                $query->where($codeIsoStandard, $countryCode);
+            })
+            ->get();
     }
 
     private function activeUsers()

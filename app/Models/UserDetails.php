@@ -26,11 +26,6 @@ class UserDetails extends Model
         'citizenship_country_id'
     ];
 
-    public function getCountry(): ?Country
-    {
-        return $this->country()->first();
-    }
-
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'citizenship_country_id');
