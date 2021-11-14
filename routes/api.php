@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/users/country/{countryCode}', [UserController::class, 'getUsersByCountryCode']);
+Route::patch('/users/{user}/details', [UserDetailsController::class, 'updateDetailsForUser']);
+
 Route::apiResource('users', UserController::class)->only([
     'index', 'show', 'update', 'destroy'
 ]);
