@@ -24,7 +24,9 @@ class UserController extends Controller
             ], 400);
         }
 
-        return UserResource::collection($this->getActiveUsersByCountryCode($countryCode, $codeIsoStandard));
+        $users = $this->getActiveUsersByCountryCode($countryCode, $codeIsoStandard);
+
+        return UserResource::collection($users->load(['details', 'details.country']));
     }
 
     private function determineISOStandard($countryCode): ?string
@@ -43,7 +45,7 @@ class UserController extends Controller
 
     private function getActiveUsersByCountryCode($countryCode = 'AT', $codeIsoStandard = 'iso2'): Collection
     {
-        return $this->activeUsers()->whereHas('user_details', function (Builder $userDetailsQuery) use ($countryCode, $codeIsoStandard) {
+        return $this->activeUsers()->whereHas('details', function (Builder $userDetailsQuery) use ($countryCode, $codeIsoStandard) {
             $userDetailsQuery->whereHas('country', function (Builder $countryQuery) use ($countryCode, $codeIsoStandard) {
                 $countryQuery->where($codeIsoStandard, $countryCode);
             });
@@ -57,7 +59,7 @@ class UserController extends Controller
 
     public function destroy(User $user): JsonResponse
     {
-        if ($user->user_details()->exists()){
+        if ($user->details()->exists()){
             return response()->json([
                 'message' => 'Unable to delete user with details.'
             ], 403);

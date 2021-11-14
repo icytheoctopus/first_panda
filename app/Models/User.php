@@ -39,10 +39,10 @@ class User extends Authenticatable
 
     public function getUserDetails(): ?UserDetails
     {
-        return $this->user_details()->first();
+        return $this->details()->first();
     }
 
-    public function user_details(): HasOne
+    public function details(): HasOne
     {
         return $this->hasOne(UserDetails::class, 'user_id');
     }
