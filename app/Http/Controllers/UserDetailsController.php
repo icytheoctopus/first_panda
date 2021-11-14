@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserDetails;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,22 +11,21 @@ use Validator;
 
 class UserDetailsController extends Controller
 {
+    public function updateDetailsForUser(Request $request, User $user): JsonResponse
+    {
+        $userDetails = $user->getUserDetails();
+        if (!$userDetails){
+            return response()->json([
+                'message' => 'User has no details that we could update',
+            ], 403);
+        }
+
+        return $this->update($request, $userDetails);
+    }
+
     public function update(Request $request, UserDetails $userDetails): JsonResponse
     {
-        $userDetailsData = $request->only([
-            'first_name',
-            'last_name',
-            'phone_number',
-            'citizenship_country_id'
-        ]);
-
-        $validator = Validator::make($userDetailsData, [
-            'first_name' => ['sometimes', 'required', 'min:2', 'max:50'],
-            'last_name' => ['sometimes', 'required', 'string', 'min:2', 'max:50'],
-            'phone_number' => ['sometimes','required','string'],
-            'citizenship_country_id'=> ['sometimes', 'required', 'integer', 'exists:App\Models\Country,id'],
-        ]);
-
+        $validator = $this->validateRequest($request);
         if ($validator->fails()){
             return response()->json([
                 'message' => 'Validation failed',
@@ -46,5 +46,16 @@ class UserDetailsController extends Controller
         return response()->json([
             'message' => 'User details updated'
         ], 200);
+    }
+
+    private function validateRequest(Request $request){
+        $userDetailsData = $request->only([
+            'first_name',
+            'last_name',
+            'phone_number',
+            'citizenship_country_id'
+        ]);
+
+        return Validator::make($userDetailsData, UserDetails::$validationRules);
     }
 }

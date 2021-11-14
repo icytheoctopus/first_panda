@@ -10,6 +10,13 @@ class UserDetails extends Model
 {
     use HasFactory;
 
+    public static array $validationRules = [
+        'first_name' => ['sometimes', 'required', 'min:2', 'max:50'],
+        'last_name' => ['sometimes', 'required', 'string', 'min:2', 'max:50'],
+        'phone_number' => ['sometimes','required','string'],
+        'citizenship_country_id'=> ['sometimes', 'required', 'integer', 'exists:App\Models\Country,id'],
+    ];
+
     protected $fillable = [
         'first_name',
         'last_name',
