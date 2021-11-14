@@ -49,15 +49,23 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ($user->user_details()->exists()){
-            return response("Unable to delete user with details.", 403);
+            return response()->json([
+                'message' => 'Unable to delete user with details.'
+            ], 403);
         }
 
         try {
             $user->deleteOrFail();
-            return response("User deleted", 200);
         }
-        catch (Throwable $e) {
-            return response("Failed to delete", 500);
+        catch (Throwable $exception) {
+            return response()->json([
+                'message' => 'Failed to delete',
+                'errors' => $exception->getMessage()
+            ], 500);
         }
+
+        return response()->json([
+            'message' => 'User deleted'
+        ], 200);
     }
 }
