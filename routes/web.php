@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//todo clean up routes
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/users/country/{countryCode}', [UserController::class, 'getUsersByCountryCode']);
-Route::get('/users/{user}/delete', [UserController::class, 'delete']);
