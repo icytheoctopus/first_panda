@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class UserController extends Controller
@@ -15,7 +16,10 @@ class UserController extends Controller
         if ($codeIsoStandard = $this->determineISOStandard($countryCode)){
             return $this->getActiveUsersByCountryCode($countryCode, $codeIsoStandard);
         }
-        return response("Invalid code, please use ISO Alpha-2 or ISO Alpha-3 country code", 400);
+
+        return response()->json([
+            'message' => 'Invalid code, please use ISO Alpha-2 or ISO Alpha-3 country code'
+        ], 400);
     }
 
     private function determineISOStandard($countryCode): ?string
@@ -46,7 +50,7 @@ class UserController extends Controller
         return User::where('active', 1);
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): JsonResponse
     {
         if ($user->user_details()->exists()){
             return response()->json([
