@@ -27,4 +27,6 @@ Route::apiResource('users', UserController::class)->only([
 
 Route::apiResource('user-details', UserDetailsController::class)->only([
     'update'
+])->parameters([
+    'user-details' => 'userDetails'
 ]);
