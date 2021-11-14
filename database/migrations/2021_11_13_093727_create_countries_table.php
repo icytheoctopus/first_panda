@@ -28,6 +28,7 @@ class CreateCountriesTable extends Migration
                 ->comment('ISO 3166-2 two letter upper case country code.');
             $table
                 ->char('iso3', 3)
+                ->nullable()
                 ->collation('ascii_bin')
                 ->comment('ISO 3166-3 three letter upper case country code.');
         });
