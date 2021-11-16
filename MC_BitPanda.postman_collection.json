@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "6cf7d4f2-2110-4d3f-8d0f-cbfdd755870c",
+		"name": "MC_BitPanda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Get transactions by source",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/transactions?source=db",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "source",
+									"value": "db"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Details",
+			"item": [
+				{
+					"name": "GetUsersByCountryCode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/users/country/at",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"users",
+								"country",
+								"at"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/users/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Details for User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/users/3/details?first_name=UPDATED First Name&last_name=UPDATED Last Name&phone_number=222 333 444 &citizenship_country_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"users",
+								"3",
+								"details"
+							],
+							"query": [
+								{
+									"key": "first_name",
+									"value": "UPDATED First Name",
+									"description": " "
+								},
+								{
+									"key": "last_name",
+									"value": "UPDATED Last Name"
+								},
+								{
+									"key": "phone_number",
+									"value": "222 333 444 "
+								},
+								{
+									"key": "citizenship_country_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update UserDetails",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/user-details/1?first_name=First Name  UPDATED&last_name=Last Name UPDATED&phone_number=000 111 000 111 &citizenship_country_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"user-details",
+								"1"
+							],
+							"query": [
+								{
+									"key": "first_name",
+									"value": "First Name  UPDATED"
+								},
+								{
+									"key": "last_name",
+									"value": "Last Name UPDATED"
+								},
+								{
+									"key": "phone_number",
+									"value": "000 111 000 111 "
+								},
+								{
+									"key": "citizenship_country_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
